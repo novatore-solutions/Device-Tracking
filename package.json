@@ -8,9 +8,7 @@
   },
   "scripts": {
     "start": ".env node server.js",
-    "dev": "env-cmd -f .env nodemon server.js",
-    "lint": "eslint --fix ./server/**/*.js",
-    "git:rev": "git rev-parse --short HEAD | tee .revision"
+    "dev": "env-cmd -f .env nodemon server.js"
   },
   "keywords": [
     "express",
@@ -86,10 +84,5 @@
       "npm run lint",
       "pretty-quick --staged"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }

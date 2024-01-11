@@ -23,3 +23,6 @@ export const updateGeoFence = async (deviceUUID: string, value: string) => {
     return axiosInstance.put(`/api/devices/geo-fence/${deviceUUID}/${value}`).then(({ data }) => data);
 };
 
+export const deleteGeoFence = async (deviceUUID: string) => {
+    return axiosInstance.delete(`/api/devices/geo-fence/${deviceUUID}`).then(({ data }) => data);
+};

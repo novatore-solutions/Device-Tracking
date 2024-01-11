@@ -28,62 +28,38 @@
                     <span v-if="historyViewType === 'map' && device.deviceType === DeviceTypeenum.AirboltGps">
                         <p class="Helvetica-family menu-group-label navy-color">Geo fence</p>
 
-                        <v-list-item :disabled="!validateRestricted()" dense @click="showMapModal()">
+                        <v-list-item dense @click="showMapModal()">
                             <v-list-item-title>{{
                                 device.mapBoundaryPoints && device.mapBoundaryPoints.length ? 'Update' : 'Create'
                             }}</v-list-item-title>
                         </v-list-item>
 
-                        <v-list-item
-                            v-if="device.mapBoundaryPoints && device.mapBoundaryPoints.length"
-                            dense
-                        >
-                            <v-list-item-title :class="validateRestricted() ? 'red--text' : ''"
-                                >Delete</v-list-item-title
-                            >
+                        <v-list-item v-if="device.mapBoundaryPoints && device.mapBoundaryPoints.length" dense
+                            @click="deleteGeoFence()">
+                            <v-list-item-title>Delete</v-list-item-title>
                         </v-list-item>
 
                         <p class="Helvetica-family menu-group-label mt-2 navy-color">History</p>
                     </span>
 
-                    <v-list-item
-                        v-if="historyViewType === 'grid'"
-                        :disabled="!validateRestricted()"
-                        dense
-                    >
+                    <v-list-item v-if="historyViewType === 'grid'" :disabled="!validateRestricted()" dense>
                         <v-list-item-title>Export CSV</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item :disabled="!validateRestricted()" dense>
-                        <v-list-item-title :class="validateRestricted() ? 'red--text' : ''"
-                            >Clear history</v-list-item-title
-                        >
+                        <v-list-item-title :class="validateRestricted() ? 'red--text' : ''">Clear
+                            history</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </v-app-bar>
 
-        <device-history-map
-            v-if="historyViewType === 'map'"
-            :device="device"
-            :expandable="true"
-        />
+        <device-history-map v-if="historyViewType === 'map'" :device="device" :expandable="true" />
 
-        <device-history-grid
-            v-if="historyViewType === 'grid'"
-            :device="device"
-            :locations="locations"
-            :perPage="perPage"
-            :page="page"
-            :total="total"
-            :onTableChange="onTableChange"
-        />
-        <device-map-drawer
-            v-model="isMapModal"
-            :device="device"
-            @childEvent="setValueOfPolyline"
-            :mapBoundaryPoints="device.mapBoundaryPoints"
-        />
+        <device-history-grid v-if="historyViewType === 'grid'" :device="device" :locations="locations" :perPage="perPage"
+            :page="page" :total="total" :onTableChange="onTableChange" />
+        <device-map-drawer v-model="isMapModal" :device="device" @childEvent="setValueOfPolyline"
+            :mapBoundaryPoints="device.mapBoundaryPoints" />
     </div>
 </template>
 
@@ -95,13 +71,16 @@
     line-height: 21px;
     color: #0d2a48;
 }
+
 .DeviceHistory {
     height: 100%;
+
     ::v-deep .v-toolbar__content {
         padding-right: 0 !important;
         padding-left: 0px !important;
     }
 }
+
 .v-menu__content {
     margin-top: 8px;
     background: #ffffff;
@@ -110,6 +89,7 @@
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
 }
+
 .menu-group-label {
     font-size: 12px;
     font-weight: 500;
@@ -217,6 +197,25 @@ export default class DeviceHistory extends Mixins<LoadableMixin>(LoadableMixin) 
             this.$toasted.error(`Unable to load history for device ${device.name}`);
         } finally {
             this.setLoading(false);
+        }
+    }
+
+    async deleteGeoFence() {
+        this.$store.commit(mutations.LOADING, { loading: true });
+        try {
+            const response = await api.deleteGeoFence(this.device.deviceUUID);
+            this.setCurrentDevice({
+                device: {
+                    ...this.device,
+                    geoFence: { enable: false, liveTrackingUnable: false, trackingTime: 0 },
+                    mapBoundaryPoints: [],
+                },
+            });
+            this.$toasted.success(response.message);
+        } catch (error) {
+            this.$toasted.error("faild to delete geo fence");
+        } finally {
+            this.$store.commit(mutations.LOADING, { loading: false });
         }
     }
 
