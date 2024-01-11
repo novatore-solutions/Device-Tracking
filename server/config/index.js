@@ -5,15 +5,11 @@ const config = {
 
   databaseUri: process.env.MONGODB_URI,
 
-  appKey: process.env.APP_KEY,
-
   port: process.env.PORT || 3000,
 
   siteUrl: process.env.SITE_URL,
 
   userUrl: process.env.USER_URL,
-
-  corsWhitelist: process.env.CORS && process.env.CORS != '*' ? process.env.CORS.split(' ') : '*',
 
   cors: {
     whitelist: (process.env.CORS || '').split(' ').map((host) => {
@@ -35,13 +31,6 @@ const config = {
     optionsSuccessStatus: 200,
   },
 
-  bearerOptions: {
-    bodyKey: 'access_token',
-    queryKey: 'access_token',
-    headerKey: 'Bearer',
-    reqKey: 'token',
-  },
-
   cache: {
     urlCacheOptions: {
       stdTTL: 60,
@@ -51,29 +40,6 @@ const config = {
 
     proxyCacheOptions: {
       stdTTL: 600, // 10 minutes
-    },
-  },
-
-  viewEngine: {
-    engine: 'pug',
-    options: {
-      views: path.resolve(__dirname, '../templates/pages'),
-    },
-  },
-
-  subscription: {
-    apple: {
-      $filter: 'env',
-
-      prod: {
-        host: 'buy.itunes.apple.com',
-        path: '/verifyReceipt',
-      },
-
-      $base: {
-        host: 'sandbox.itunes.apple.com',
-        path: '/verifyReceipt',
-      },
     },
   },
 };
