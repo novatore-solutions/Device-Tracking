@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["*"],
+      "@base/*": ["server/*"],
+      "@models/*": ["server/models/*"],
+      "@services/*": ["server/services/*"]
+    }
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}
