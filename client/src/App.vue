@@ -74,12 +74,10 @@ export default class App extends Vue {
                     lastSeenTime: data.lastSeenTime,
                     modem_state: data.modem_state,
                     modem_temperature: data.modem_temperature,
-                    modem_temperature_f: data.modem_temperature_f,
-                    modem_temperature_c: data.modem_temperature_c,
                     modem_voltage: data.modem_voltage,
                     psm_tau: data.psm_tau,
                     psm_active_time: data.psm_active_time,
-                    edrx_value: data.edrx_value,
+                    gps_value: data.gps_value,
                     edrx_ptw: data.edrx_ptw,
                 };
             return item;
@@ -93,12 +91,10 @@ export default class App extends Vue {
                     lastSeenTime: data.lastSeenTime,
                     modem_state: data.modem_state,
                     modem_temperature: data.modem_temperature,
-                    modem_temperature_f: data.modem_temperature_f,
-                    modem_temperature_c: data.modem_temperature_c,
                     modem_voltage: data.modem_voltage,
                     psm_tau: data.psm_tau,
                     psm_active_time: data.psm_active_time,
-                    edrx_value: data.edrx_value,
+                    gps_value: data.gps_value,
                     edrx_ptw: data.edrx_ptw,
                 },
             });

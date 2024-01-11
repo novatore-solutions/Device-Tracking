@@ -4,5 +4,5 @@ const mandatoryParam = (envVarName: string) => {
     return value;
 };
 
-export const appEnvironment = mandatoryParam('VUE_APP_ENVIRONMENT');
+export const environment = mandatoryParam('VUE_APP_ENVIRONMENT');
 export const apiBaseUrl = mandatoryParam('VUE_APP_API_ENDPOINT');

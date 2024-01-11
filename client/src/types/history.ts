@@ -10,8 +10,6 @@ export interface HistoryData {
     timestamp?: number;
     type?: locationType;
     modem_temperature?: number;
-    modem_temperature_f?: number;
-    modem_temperature_c?: number;
     modem_voltage?: number;
     alertType?: string;
     duration?: number;

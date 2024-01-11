@@ -6,7 +6,7 @@ export const loadDevices = async (
     deviceType: string,
     name: string,
 ): Promise<DeviceInfo[]> => {
-    let url = `/api/devices/find`;
+    let url = `/api/get-devices`;
     if (deviceType && deviceType != 'all') {
         url = `${url}?type=${deviceType}${name ? `&name=${name}` : ''}`;
     } else if (name) {
@@ -16,7 +16,7 @@ export const loadDevices = async (
 };
 
 export const updateDevice = async (device: Partial<DeviceInfo>): Promise<DeviceInfo> => {
-    return axiosInstance.put(`/api/devices/${device._id}`, device).then(({ data }) => data);
+    return axiosInstance.put(`/api/update-devices/${device._id}`, device).then(({ data }) => data);
 };
 
 export const updateGeoFence = async (deviceUUID: string, value: string) => {
@@ -24,5 +24,5 @@ export const updateGeoFence = async (deviceUUID: string, value: string) => {
 };
 
 export const deleteGeoFence = async (deviceUUID: string) => {
-    return axiosInstance.delete(`/api/devices/geo-fence/${deviceUUID}`).then(({ data }) => data);
+    return axiosInstance.delete(`/api/delete-devices/geo-fence/${deviceUUID}`).then(({ data }) => data);
 };

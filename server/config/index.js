@@ -1,11 +1,10 @@
 const path = require('path');
 const config = {
-  appEnvironment: process.env.NODE_ENV,
-  databaseUri: process.env.MONGODB_URI,
+  environment: process.env.NODE_ENV,
+  databaseUrl: process.env.MONGODB_URL,
   appKey: process.env.APP_KEY,
   port: process.env.PORT || 3000,
-  siteUrl: process.env.SITE_URL,
-  userUrl: process.env.USER_URL,
+  appUrl: process.env.APP_URL,
   corsWhitelist: process.env.CORS && process.env.CORS != '*' ? process.env.CORS.split(' ') : '*',
   cors: {
     whitelist: (process.env.CORS || '').split(' ').map((host) => {

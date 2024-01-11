@@ -117,7 +117,7 @@
             <device-overview-info-row :show="device.deviceType === DeviceTypeenum.AirboltGps" title="Temperature"
                 :value="deviceTemperature" :loading="modemLoading" />
             <device-overview-info-row :show="device.deviceType === DeviceTypeenum.AirboltGps" title="Geo Fence"
-                :value="device.geoFence.enable ? 'On' : 'Off'" :loading="modemLoading" />
+                :value="device.geoFence&&device.geoFence.enable ? 'On' : 'Off'" :loading="modemLoading" />
             <device-overview-info-row :show="device.deviceType === DeviceTypeenum.AirboltGps" :title="deviceIdtitle"
                 :value="deviceId" />
             <device-overview-info-row :show="true" title="Serial Number" :value="device.deviceUUID" />
@@ -346,7 +346,7 @@ export default class DeviceInfoComponent extends Vue {
     }
 
     get simStatus() {
-        return this.device?.esim ? (this.device?.esim.status === 'Active' ? 'Active' : 'Inactive') : 'N/A';
+        return 'Inactive';
     }
 
     get deviceId() {

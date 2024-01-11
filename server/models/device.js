@@ -1,7 +1,5 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const { ObjectId } = require('mongoose').Types;
-const ShareDevice = require('./share-device');
 const {
   DeviceTypes,
   DefaultDeviceType,
@@ -22,7 +20,7 @@ const alertSettingsFields = {
 };
 
 const gpsDeviceFields = {
-  // Temperature alert
+
   temperature: {
     ...alertSettingsFields,
     condition: { type: String, enum: ['lessOrEqual', 'greaterOrEqual'], default: 'lessOrEqual' },
@@ -30,7 +28,6 @@ const gpsDeviceFields = {
     unit: { type: String, enum: ['c', 'f'], default: 'c' },
   },
 
-  // motion alert
   accelerometer: {
     ...alertSettingsFields,
     ultraPowerMode: { type: Boolean, default: false },
@@ -46,23 +43,18 @@ const gpsDeviceFields = {
   waterAlarm: { ...alertSettingsFields },
   modem_voltage: { type: Number, default: 0, required: false },
   modem_temperature: { type: Number, default: 0, required: false },
-  modem_temperature_c: { type: Number, default: 0, required: false },
-  modem_temperature_f: { type: Number, default: 0, required: false },
   modem_state: { type: Number, default: 0, required: false },
   imei: { type: String, required: false },
   iccid: { type: String, required: false },
   isTrialAvailed: { type: Boolean, default: false },
-  esim: { type: String, required: false },
   operatingMode: { type: String, enum: Object.values(OperatingModes), default: DefaultOperatingMode },
   psm_tau: { type: Number, required: false },
   psm_active_time: { type: Number, required: false },
-  edrx_value: { type: Number, required: false },
+  gps_value: { type: Number, required: false },
   edrx_ptw: { type: Number, required: false },
-  rai_value: { type: Boolean, default: false },
   scheduleReport: [String],
   scheduleReportInterval: { type: Number, default: defaultScheduleReportInterval },
   locationReportMode: { type: String, enum: Object.values(GPSReportModes), default: DefaultGPSReportMode },
-  continuousReportReset: { type: Date },
   ledFlash: { type: Boolean, default: false },
   pushNotification: { type: Boolean, default: true },
   emailAlerts: { type: Boolean, default: false },
@@ -71,18 +63,10 @@ const gpsDeviceFields = {
   alarm: { type: Boolean, default: false },
   notificationEmails: [String],
   emergencyMode: { type: Boolean, default: false },
-  firmware: { type: mongoose.Types.ObjectId, required: false, ref: 'Firmware' },
   proximity: { type: String, enum: Object.values(ProximityAlerts), default: DefaultProximityAlert },
   listenToLock: { type: Boolean, default: false },
   cellRequestsCount: { type: Number },
-  cellRequestsResetOn: { type: Date },
-  lastReportType: { type: String },
   mapBoundaryPoints: [[Number]],
-  // geoFence: { type: Boolean, default: false },
-  geoFenceRepeat: { type: Number, default: 0 },
-  geoFenceEmailRepeat: { type: Number, default: 0 },
-  transferredUserId: { type: String },
-  continuosStartTime: { type: Date },
 };
 
 const gpsDeviceFieldsKeys = Object.keys(gpsDeviceFields);
@@ -156,7 +140,6 @@ schema.statics.create = async function (payload) {
   if (payload.deviceType === DeviceTypes.ShieldGps) {
     obj.imei = payload.imei ? payload.imei : '';
     obj.iccid = payload.iccid ? payload.iccid : '';
-    obj.esim = ObjectId(payload.esim);
     obj.operatingMode = DefaultOperatingMode;
     obj.scheduleReport = [DefaultScheduleReportMode];
     obj.accelerometer = {
@@ -197,7 +180,6 @@ schema.statics.findByDeviceUUID = async function (deviceUUID) {
     deviceUUID,
   })
     .select(fields)
-    .populate('esim');
 
   if (devices) {
     devices.forEach((device) => {

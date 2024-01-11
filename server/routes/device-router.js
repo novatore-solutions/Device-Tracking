@@ -2,17 +2,16 @@ const express = require("express");
 const Device = require("@models/device");
 const router = express.Router();
 
-router.get("/devices/find", async (req, res) => {
+router.get("/get-devices", async (req, res) => {
   const device = await Device.find({})
     .sort({ timeCreated: -1 })
-    .populate("esim")
     .limit(2)
     .lean();
 
   res.json(device);
 });
 
-router.put("/devices/:id", async (req, res) => {
+router.put("/update-devices/:id", async (req, res) => {
   const { id } = req.params;
   const payload = req.body;
 
@@ -115,7 +114,7 @@ router.put("/devices/:id", async (req, res) => {
   res.json(device);
 });
 
-router.delete('/devices/geo-fence/:deviceUUID', async (req, res) => {
+router.delete('/delete-devices/geo-fence/:deviceUUID', async (req, res) => {
   const { deviceUUID } = req.params;
 
   const device = await Device.findOne({ deviceUUID });

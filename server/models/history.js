@@ -17,8 +17,6 @@ const schema = new mongoose.Schema(
     lastSeenOn: { type: Date, required: false },
     modem_voltage: { type: Number, default: null, required: false },
     modem_temperature: { type: Number, default: null, required: false },
-    modem_temperature_c: { type: Number, default: null, required: false },
-    modem_temperature_f: { type: Number, default: null, required: false },
     alertType: { type: String, default: '', required: false },
     duration: { type: Number, default: 0, required: false },
   },

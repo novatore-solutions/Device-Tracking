@@ -96,16 +96,13 @@ export interface DeviceInfo {
     alarm?: boolean;
     modem_voltage?: number;
     modem_temperature?: number;
-    modem_temperature_f?: number;
-    modem_temperature_c?: number;
     modem_state?: number;
     // modemInfo?: ModemInfo;
     operatingMode?: string;
-    esim?: EsimInterface;
     subscription?: any;
     psm_tau?: number;
     psm_active_time?: number;
-    edrx_value?: number;
+    gps_value?: number;
     edrx_ptw?: number;
     privilege: number;
     cellRequestsCount?: number;

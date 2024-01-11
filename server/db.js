@@ -12,8 +12,6 @@ const history = {
   deviceUUID: '999999999999911',
   modem_voltage: 4000,
   modem_temperature: 20,
-  modem_temperature_c: 20,
-  modem_temperature_f: 68,
   type: 'gps',
   latitude: -36.7463843,
   longitude: 174.7223271,
@@ -52,7 +50,7 @@ module.exports.initialize = async () => {
       useUnifiedTopology: true,
     };
 
-    mongoose.connect(config.databaseUri, options);
+    mongoose.connect(config.databaseUrl, options);
     module.exports.db = mongoose.connection;
 
     module.exports.db.on('error', reject);

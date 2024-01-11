@@ -7,9 +7,9 @@ export const filterDevicesByType = (devices: DeviceInfo[], deviceType: string): 
 };
 
 export const get_edrx_status = (device: DeviceInfo) => {
-    return device?.edrx_value && device?.edrx_ptw
-        ? device?.edrx_value > 0 && device?.edrx_ptw > 0
-            ? `On - ${device?.edrx_value}`
+    return device?.gps_value && device?.edrx_ptw
+        ? device?.gps_value > 0 && device?.edrx_ptw > 0
+            ? `On - ${device?.gps_value}`
             : 'Off'
         : 'N/A';
 };
@@ -30,8 +30,8 @@ export const get_operating_mode = (device: DeviceInfo) => {
                 : 'Available / Off'
             : 'Unavailable in your region';
     } else {
-        return device?.edrx_value && device?.edrx_ptw
-            ? device?.edrx_value > 0 && device?.edrx_ptw > 0
+        return device?.gps_value && device?.edrx_ptw
+            ? device?.gps_value > 0 && device?.edrx_ptw > 0
                 ? 'Available / On '
                 : 'Available / Off'
             : 'Unavailable in your region';

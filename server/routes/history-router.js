@@ -11,7 +11,7 @@ const PER_PAGE = 10;
 const PAGE_LIMIT = 20;
 const MAX_LIMIT = PER_PAGE * PAGE_LIMIT;
 
-router.get('/history/map/:deviceUUID', async (req, res) => {
+router.get('/device-history/:deviceUUID', async (req, res) => {
   const { deviceUUID } = req.params;
 
   // validate device
@@ -33,26 +33,14 @@ router.get('/history/map/:deviceUUID', async (req, res) => {
     .sort({ timeCreated: -1 })
     .limit(perPage)
     .select(
-      'latitude longitude timeCreated lastSeenOn type address modem_voltage modem_temperature modem_temperature_f modem_temperature_c alertType duration',
+      'latitude longitude timeCreated lastSeenOn type address modem_voltage modem_temperature alertType duration',
     )
     .lean();
-
-  for (const i in histories) {
-    delete histories[i]._id;
-    histories[i].modem_temperature =
-      device.temperature?.unit === 'f'
-        ? histories[i].modem_temperature_f ?? cToF(histories[i].modem_temperature)
-        : histories[i].modem_temperature_c ?? histories[i].modem_temperature;
-    if (histories[i].lastSeenOn) {
-      histories[i].timeCreated = histories[i].lastSeenOn;
-      delete histories[i].lastSeenOn;
-    }
-  }
 
   return res.json(histories);
 });
 
-router.get('/history/find/device/:deviceUUID', async (req, res) => {
+router.get('/find-device-history/:deviceUUID', async (req, res) => {
   const { deviceUUID } = req.params;
 
   // validate device
@@ -78,13 +66,6 @@ router.get('/history/find/device/:deviceUUID', async (req, res) => {
     .skip(perPage * (page - 1))
     .limit(perPage);
 
-  for (const i in histories) {
-    histories[i].modem_temperature =
-      device.temperature?.unit === 'f'
-        ? histories[i].modem_temperature_f ?? cToF(histories[i].modem_temperature)
-        : histories[i].modem_temperature_c ?? histories[i].modem_temperature;
-  }
-
   return res.json({
     success: true,
     data: histories,
@@ -92,17 +73,5 @@ router.get('/history/find/device/:deviceUUID', async (req, res) => {
   });
 });
 
-router.get(['/history/TEMP/find/device/:deviceUUID', '/history/:deviceUUID'], async (req, res) => {
-  const { deviceUUID } = req.params;
-  const histories = await History.find({ deviceUUID }).sort({ timeCreated: -1 }).limit(20);
-  const device = await Device.findOne({ deviceUUID });
-  for (const i in histories) {
-    histories[i].modem_temperature =
-      device?.temperature?.unit === 'f'
-        ? histories[i].modem_temperature_f ?? cToF(histories[i].modem_temperature)
-        : histories[i].modem_temperature_c ?? histories[i].modem_temperature;
-  }
-  return res.json(histories);
-});
 
 module.exports = router;

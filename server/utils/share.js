@@ -1,6 +1,6 @@
 const { DevicePrivileges } = require('@base/constants/enums/device-privileges');
 
-const shareFindPayload = (query) => {
+const shareDevicePayload = (query) => {
   const now = new Date();
   return {
     ...query,
@@ -21,5 +21,5 @@ const shareFindPayload = (query) => {
 };
 
 module.exports = {
-  shareFindPayload,
+  shareDevicePayload,
 };
